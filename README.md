@@ -48,9 +48,11 @@ use({
 
 This command uses native `CTRL-o` and `CTRL-i` to jump until the buffer is different from the current buffer. If there are no previous or next buffer, then the command does not jump at all.
 
+### backward
+
 When jumping to the previous buffer, it will jump to the last occurance in the jumplist that is different from the current buffer. Below is a simple illustration of the before and after position in the jumplist stack.
 
-### Before
+#### Before
 
 ```
 Buffer 1    line 1
@@ -61,7 +63,7 @@ Buffer 2    line 20     <--
 Buffer 2    line 30
 ```
 
-### After
+#### After
 
 ```
 Buffer 1    line 1
@@ -72,9 +74,11 @@ Buffer 2    line 20
 Buffer 2    line 30
 ```
 
+### forward
+
 When jumping to the next buffer, it will jump to the last occurance in the jumplist that is different from the current buffer. Below is a simple illustration of the before and after position in the jumplist stack.
 
-### Before
+#### Before
 
 ```
 Buffer 1    line 1      <--
@@ -85,7 +89,7 @@ Buffer 2    line 20
 Buffer 2    line 30
 ```
 
-### After
+#### After
 
 ```
 Buffer 1    line 1
