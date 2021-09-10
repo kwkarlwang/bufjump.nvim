@@ -53,6 +53,7 @@ local forward = function()
 end
 local setup = function(cfg)
 	local opts = { silent = true, noremap = true }
+	cfg = cfg or {}
 	local forwardkey = cfg.forward or "<C-n>"
 	local backwardkey = cfg.backward or "<C-p>"
 	vim.api.nvim_set_keymap("n", backwardkey, ":lua require('bufjump').backward()<cr>", opts)
