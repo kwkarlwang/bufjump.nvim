@@ -4,7 +4,6 @@ https://user-images.githubusercontent.com/38927155/132891665-88f70573-c1d8-462d-
 
 Have you ever had to temporarily go to another file, perhaps previewing some changes with lsp go to refrenece, fiddle a bit, and have to jump back to the main file that you were working with? Instead of aimlessly smashing `CTRL-o` and `CTRL-i`, bufjump.nvim allows you to jump to previous or next buffer in the vim native jumplist with one single command.
 
-
 ## Prerequistes
 
 - Neovim 0.5 or higher
@@ -45,6 +44,14 @@ use({
     end,
 })
 
+```
+
+You can also bind the function `forward` and `backward` as followed
+
+```
+local opts = { silent=true, noremap=true }
+vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backward()<cr>")
+vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forward()<cr>")
 ```
 
 ## How it works
