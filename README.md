@@ -21,7 +21,7 @@ with [packer.nvim](https://github.com/wbthomason/packer.nvim)
 ```lua
 use {
     "kwkarlwang/bufjump.nvim",
-    config = function
+    config = function()
         require("bufjump").setup()
     end
 }
