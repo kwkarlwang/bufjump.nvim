@@ -21,7 +21,7 @@ with [packer.nvim](https://github.com/wbthomason/packer.nvim)
 ```lua
 use {
     "kwkarlwang/bufjump.nvim",
-    config = function
+    config = function()
         require("bufjump").setup()
     end
 }
@@ -29,7 +29,7 @@ use {
 
 ## Configuration
 
-bufjump.nvim provides two options, `forward` and `backward` which are the keymappings to jump to the next and previous buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively.
+bufjump.nvim provides three options, `forward`, `backward` and `on_success`. `forward` and `backward` are the keymappings to jump to the next and previous buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively.
 
 Default configuration:
 
@@ -40,6 +40,7 @@ use({
         require("bufjump").setup({
             forward = "<C-n>",
             backward = "<C-p>",
+            on_success = nil
         })
     end,
 })
@@ -54,9 +55,33 @@ vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backward()<cr>")
 vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forward()<cr>")
 ```
 
+### on_success
+
+`on_success` is a callback function that only executes after a successful backward or forward jump, which means that if there are no previous buffers in the jumplist, then `on_success` will not be executed.
+
+Suppose that you want to jump to the last cursor position after exiting the buffer instead of the last cursor position in the jumplist stack, you can set the `on_success` function as followed:
+
+```lua
+use({
+    "kwkarlwang/bufjump.nvim",
+    config = function()
+        require("bufjump").setup({
+            forward = "<C-n>",
+            backward = "<C-p>",
+            on_success = function()
+                vim.cmd([[execute "normal! g`\"zz"]])
+            end,
+        })
+    end,
+})
+
+```
+
+This will jump to the last cursor position before you left the buffer while also center the cursor to the middle of the screen. You can check `:h last-position-jump` for more information.
+
 ## How it works
 
-This command uses native `CTRL-o` and `CTRL-i` to jump until the buffer is different from the current buffer. If there are no previous or next buffer, then the command does not jump at all.
+Under the hood, this plugin uses native `CTRL-o` and `CTRL-i` to jump until the buffer is different from the current buffer. If there are no previous or next buffer, then the command does not jump at all.
 
 ### backward
 
