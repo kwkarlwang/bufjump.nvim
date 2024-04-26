@@ -4,6 +4,8 @@ https://user-images.githubusercontent.com/38927155/132891665-88f70573-c1d8-462d-
 
 Have you ever had to temporarily go to another file, perhaps previewing some changes with lsp go to refrenece, fiddle a bit, and have to jump back to the main file that you were working with? Instead of aimlessly smashing `CTRL-o` and `CTRL-i`, bufjump.nvim allows you to jump to previous or next buffer in the vim native jumplist with one single command.
 
+Or, have you ever wanted to browse your jumplist *within* the current buffer, *not* jumping outside that buffer? Read on.
+
 ## Prerequistes
 
 - Neovim 0.5 or higher
@@ -29,7 +31,13 @@ use {
 
 ## Configuration
 
-bufjump.nvim provides three options, `forward`, `backward` and `on_success`. `forward` and `backward` are the keymappings to jump to the next and previous buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively.
+bufjump.nvim provides the following configuration options:
+
+- `forwardkey`, `backwardkey` the keymappings to jump to the next and previous 
+  buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively. You can deactivate these keybindings by passing `false`.
+
+- `forwardSameBufKey`, `backwardSameBufKey` provide keymappings to jump the the 
+  next and previous jumplist positions within the same buffer. These have no default keybindings.
 
 Default configuration:
 
@@ -38,8 +46,8 @@ use({
     "kwkarlwang/bufjump.nvim",
     config = function()
         require("bufjump").setup({
-            forward = "<C-n>",
-            backward = "<C-p>",
+            forwardkey = "<C-n>",
+            backwardkey = "<C-p>",
             on_success = nil
         })
     end,
@@ -47,12 +55,14 @@ use({
 
 ```
 
-You can also bind the function `forward` and `backward` as followed
+You can also bind the function `forward`, `backward` `forwardSameBuf`, `backwardSameBuf` as followed
 
 ```
 local opts = { silent=true, noremap=true }
 vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backward()<cr>", opts)
 vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forward()<cr>", opts)
+vim.api.nvim_set_keymap("n", "<M-S-o>", ":lua require('bufjump').backwardSameBuf()<cr>", opts)
+vim.api.nvim_set_keymap("n", "<M-S-i>", ":lua require('bufjump').forwardSameBuf()<cr>", opts)
 ```
 
 ### on_success
