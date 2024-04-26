@@ -37,7 +37,7 @@ bufjump.nvim provides the following configuration options:
   buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively. You can deactivate these keybindings by passing `false`.
 
 - `forwardSameBufKey`, `backwardSameBufKey` provide keymappings to jump the the 
-  next and previous jumplist positions within the same buffer. These have no default keybindings.
+  next and previous jumplist positions within the same buffer. These have no default keybindings. Suggestion: `<M-i>` and `<M-o>`.
 
 Default configuration:
 
