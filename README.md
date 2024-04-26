@@ -61,8 +61,8 @@ You can also bind the function `forward`, `backward` `forwardSameBuf`, `backward
 local opts = { silent=true, noremap=true }
 vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backward()<cr>", opts)
 vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forward()<cr>", opts)
-vim.api.nvim_set_keymap("n", "<M-S-o>", ":lua require('bufjump').backwardSameBuf()<cr>", opts)
-vim.api.nvim_set_keymap("n", "<M-S-i>", ":lua require('bufjump').forwardSameBuf()<cr>", opts)
+vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backwardSameBuf()<cr>", opts)
+vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forwardSameBuf()<cr>", opts)
 ```
 
 ### on_success
