@@ -90,7 +90,6 @@ end
 
 
 local forwardSameBuf = function()
-  dumpjumps()
   local jumplistAndPos = vim.fn.getjumplist()
   local jumplist = jumplistAndPos[1]
   if #jumplist == 0 then
