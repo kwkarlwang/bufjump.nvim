@@ -1,4 +1,5 @@
 local on_success = nil
+
 local jumpbackward = function(num)
   vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-o>"]])
 end
@@ -32,7 +33,7 @@ local backward = function()
   end
 end
 
-local backwardSameBuf = function()
+local backward_same_buf = function()
   local jumplistAndPos = vim.fn.getjumplist()
 
   local jumplist = jumplistAndPos[1]
@@ -89,7 +90,7 @@ local forward = function()
 end
 
 
-local forwardSameBuf = function()
+local forward_same_buf = function()
   local jumplistAndPos = vim.fn.getjumplist()
   local jumplist = jumplistAndPos[1]
   if #jumplist == 0 then
@@ -118,26 +119,26 @@ end
 local setup = function(cfg)
   local opts = { silent = true, noremap = true }
   cfg = cfg or {}
-  if cfg.forwardkey ~= false then
-    local forwardkey = cfg.forward or "<C-n>"
-    vim.api.nvim_set_keymap("n", forwardkey, ":lua require('bufjump').forward()<cr>", opts)
+  if cfg.forward_key ~= false then
+    local forward_key = cfg.forward or "<C-n>"
+    vim.api.nvim_set_keymap("n", forward_key, ":lua require('bufjump').forward()<cr>", opts)
   end
-  if cfg.backwardkey ~= false then
-    local backwardkey = cfg.backward or "<C-n>"
-    vim.api.nvim_set_keymap("n", backwardkey, ":lua require('bufjump').forward()<cr>", opts)
+  if cfg.backward_key ~= false then
+    local backward_key = cfg.backward or "<C-n>"
+    vim.api.nvim_set_keymap("n", backward_key, ":lua require('bufjump').forward()<cr>", opts)
   end
-  if cfg.forwardSameBufKey then
-    vim.api.nvim_set_keymap("n", cfg.forwardSameBufKey, ":lua require('bufjump').forwardSameBuf()<cr>", opts)
+  if cfg.forward_same_buf_key then
+    vim.api.nvim_set_keymap("n", cfg.forward_same_buf_key, ":lua require('bufjump').forward_same_buf()<cr>", opts)
   end
-  if cfg.backwardSameBufKey then
-    vim.api.nvim_set_keymap("n", cfg.backwardSameBufKey, ":lua require('bufjump').backwardSameBuf()<cr>", opts)
+  if cfg.backward_same_bufKey then
+    vim.api.nvim_set_keymap("n", cfg.backward_same_bufKey, ":lua require('bufjump').backward_same_buf()<cr>", opts)
   end
 end
 
 return {
   backward = backward,
   forward = forward,
-  backwardSameBuf = backwardSameBuf,
-  forwardSameBuf = forwardSameBuf,
+  backward_same_buf = backward_same_buf,
+  forward_same_buf = forward_same_buf,
   setup = setup,
 }
