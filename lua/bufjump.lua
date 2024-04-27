@@ -117,21 +117,21 @@ local forward_same_buf = function()
 end
 
 local setup = function(cfg)
-  local opts = { silent = true, noremap = true }
+  local bufjump = require('bufjump')
   cfg = cfg or {}
   if cfg.forward_key ~= false then
-    local forward_key = cfg.forward or "<C-n>"
-    vim.api.nvim_set_keymap("n", forward_key, ":lua require('bufjump').forward()<cr>", opts)
+    local forward_key = cfg.forward_key or "<C-n>"
+    vim.keymap.set("n", forward_key, bufjump.forward)
   end
   if cfg.backward_key ~= false then
-    local backward_key = cfg.backward or "<C-n>"
-    vim.api.nvim_set_keymap("n", backward_key, ":lua require('bufjump').forward()<cr>", opts)
+    local backward_key = cfg.backward_key or "<C-p>"
+    vim.keymap.set("n", backward_key, bufjump.backward)
   end
   if cfg.forward_same_buf_key then
-    vim.api.nvim_set_keymap("n", cfg.forward_same_buf_key, ":lua require('bufjump').forward_same_buf()<cr>", opts)
+    vim.keymap.set("n", cfg.forward_same_buf_key, bufjump.forward_same_buf)
   end
-  if cfg.backward_same_bufKey then
-    vim.api.nvim_set_keymap("n", cfg.backward_same_bufKey, ":lua require('bufjump').backward_same_buf()<cr>", opts)
+  if cfg.backward_same_buf_key then
+    vim.keymap.set("n", cfg.backward_same_buf_key, bufjump.backward_same_buf)
   end
 end
 

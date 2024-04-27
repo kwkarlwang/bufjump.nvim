@@ -8,7 +8,7 @@ Or, have you ever wanted to browse your jumplist *within* the current buffer, *n
 
 ## Prerequistes
 
-- Neovim 0.5 or higher
+- Neovim 0.7 or higher
 
 ## Installing
 
