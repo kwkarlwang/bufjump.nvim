@@ -4,7 +4,7 @@ https://user-images.githubusercontent.com/38927155/132891665-88f70573-c1d8-462d-
 
 Have you ever had to temporarily go to another file, perhaps previewing some changes with lsp go to refrenece, fiddle a bit, and have to jump back to the main file that you were working with? Instead of aimlessly smashing `CTRL-o` and `CTRL-i`, bufjump.nvim allows you to jump to previous or next buffer in the vim native jumplist with one single command.
 
-Or, have you ever wanted to browse your jumplist *within* the current buffer, *not* jumping outside that buffer? Read on.
+Or, have you ever wanted to browse your jumplist _within_ the current buffer, _not_ jumping outside that buffer? Read on.
 
 ## Prerequistes
 
@@ -33,10 +33,10 @@ use {
 
 bufjump.nvim provides the following configuration options:
 
-- `forward_key`, `backward_key` the keymappings to jump to the next and previous 
-  buffer in the jumplist respectively. The default keymappings for `forward` and `backward` are `CTRL-n` and `CTRL-p` respectively. You can deactivate these keybindings by passing `false`.
+- `forward_key`, `backward_key` the keymappings to jump to the next and previous
+  buffer in the jumplist respectively. The default keymappings for `forward_key` and `backward_key` are `CTRL-n` and `CTRL-p` respectively. You can deactivate these keybindings by passing `false`.
 
-- `forward_same_bufKey`, `backward_same_bufKey` provide keymappings to jump the the 
+- `forward_same_buf_key`, `backward_same_buf_key` provide keymappings to jump the the
   next and previous jumplist positions within the same buffer. These have no default keybindings. Suggestion: `<M-i>` and `<M-o>`.
 
 Default configuration:
@@ -57,7 +57,7 @@ use({
 
 You can also bind the function `forward`, `backward` `forward_same_buf`, `backward_same_buf` as followed
 
-```
+```lua
 local opts = { silent=true, noremap=true }
 vim.api.nvim_set_keymap("n", "<M-o>", ":lua require('bufjump').backward()<cr>", opts)
 vim.api.nvim_set_keymap("n", "<M-i>", ":lua require('bufjump').forward()<cr>", opts)
@@ -76,8 +76,8 @@ use({
     "kwkarlwang/bufjump.nvim",
     config = function()
         require("bufjump").setup({
-            forward = "<C-n>",
-            backward = "<C-p>",
+            forward_key = "<C-n>",
+            backward_key = "<C-p>",
             on_success = function()
                 vim.cmd([[execute "normal! g`\"zz"]])
             end,
