@@ -1,3 +1,5 @@
+local M = {}
+
 local on_success = nil
 
 local jumpbackward = function(num)
@@ -8,7 +10,7 @@ local jumpforward = function(num)
   vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-i>"]])
 end
 
-local backward = function()
+M.backward = function()
   local getjumplist = vim.fn.getjumplist()
   local jumplist = getjumplist[1]
   if #jumplist == 0 then
@@ -33,7 +35,7 @@ local backward = function()
   end
 end
 
-local backward_same_buf = function()
+M.backward_same_buf = function()
   local jumplistAndPos = vim.fn.getjumplist()
 
   local jumplist = jumplistAndPos[1]
@@ -60,7 +62,7 @@ local backward_same_buf = function()
   end
 end
 
-local forward = function()
+M.forward = function()
   local getjumplist = vim.fn.getjumplist()
   local jumplist = getjumplist[1]
   if #jumplist == 0 then
@@ -89,7 +91,7 @@ local forward = function()
   end
 end
 
-local forward_same_buf = function()
+M.forward_same_buf = function()
   local jumplistAndPos = vim.fn.getjumplist()
   local jumplist = jumplistAndPos[1]
   if #jumplist == 0 then
@@ -115,7 +117,7 @@ local forward_same_buf = function()
   end
 end
 
-local setup = function(cfg)
+M.setup = function(cfg)
   local bufjump = require("bufjump")
   cfg = cfg or {}
   if cfg.forward_key ~= false then
@@ -135,10 +137,4 @@ local setup = function(cfg)
   on_success = cfg.on_success or nil
 end
 
-return {
-  backward = backward,
-  forward = forward,
-  backward_same_buf = backward_same_buf,
-  forward_same_buf = forward_same_buf,
-  setup = setup,
-}
+return M
