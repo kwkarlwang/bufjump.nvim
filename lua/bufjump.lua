@@ -3,11 +3,11 @@ local M = {}
 local on_success = nil
 
 local jumpbackward = function(num)
-  vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-o>"]])
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(tostring(num) .. "<c-o>", true, true, true), "n", false)
 end
 
 local jumpforward = function(num)
-  vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-i>"]])
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(tostring(num) .. "<c-i>", true, true, true), "n", false)
 end
 
 ---@param stop_cond fun(from_bufnr: integer, to_bufnr: integer):boolean
