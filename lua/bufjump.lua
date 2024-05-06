@@ -10,6 +10,52 @@ local jumpforward = function(num)
   vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-i>"]])
 end
 
+---@param stop_cond fun(from_bufnr: integer, to_bufnr: integer):boolean
+M.backward_cond = function(stop_cond)
+  local jumplist, to_pos = unpack(vim.fn.getjumplist())
+  if #jumplist == 0 or to_pos == 0 then
+    return
+  end
+
+  local from_bufnr = vim.fn.bufnr()
+  local from_pos = to_pos + 1
+  repeat
+    local to_bufnr = jumplist[to_pos].bufnr
+    if stop_cond(from_bufnr, to_bufnr) then
+      jumpbackward(from_pos - to_pos)
+      if on_success then
+        on_success()
+      end
+      return
+    end
+    to_pos = to_pos - 1
+  until to_pos == 0
+end
+
+---@param stop_cond fun(from_bufnr: integer, to_bufnr: integer):boolean
+M.forward_cond = function(stop_cond)
+  local getjumplist = vim.fn.getjumplist()
+  local jumplist, from_pos = getjumplist[1], getjumplist[2] + 1
+  local max_pos = #jumplist
+  if max_pos == 0 or from_pos == max_pos then
+    return
+  end
+
+  local from_bufnr = vim.fn.bufnr()
+  local to_pos = from_pos + 1
+  repeat
+    local to_bufnr = jumplist[to_pos].bufnr
+    if stop_cond(from_bufnr, to_bufnr) then
+      jumpforward(to_pos - from_pos)
+      if on_success then
+        on_success()
+      end
+      return
+    end
+    to_pos = to_pos + 1
+  until to_pos == max_pos + 1
+end
+
 M.backward = function()
   local getjumplist = vim.fn.getjumplist()
   local jumplist = getjumplist[1]
