@@ -89,7 +89,6 @@ local forward = function()
   end
 end
 
-
 local forward_same_buf = function()
   local jumplistAndPos = vim.fn.getjumplist()
   local jumplist = jumplistAndPos[1]
@@ -117,7 +116,7 @@ local forward_same_buf = function()
 end
 
 local setup = function(cfg)
-  local bufjump = require('bufjump')
+  local bufjump = require("bufjump")
   cfg = cfg or {}
   if cfg.forward_key ~= false then
     local forward_key = cfg.forward_key or "<C-n>"
