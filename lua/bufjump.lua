@@ -32,6 +32,18 @@ M.backward_cond = function(stop_cond)
   until to_pos == 0
 end
 
+M.backward = function()
+  M.backward_cond(function(from_bufnr, to_bufnr)
+    return from_bufnr ~= to_bufnr and vim.api.nvim_buf_is_valid(to_bufnr)
+  end)
+end
+
+M.backward_same_buf = function()
+  M.backward_cond(function(from_bufnr, to_bufnr)
+    return from_bufnr == to_bufnr and vim.api.nvim_buf_is_valid(to_bufnr)
+  end)
+end
+
 ---@param stop_cond fun(from_bufnr: integer, to_bufnr: integer):boolean
 M.forward_cond = function(stop_cond)
   local getjumplist = vim.fn.getjumplist()
@@ -56,111 +68,16 @@ M.forward_cond = function(stop_cond)
   until to_pos == max_pos + 1
 end
 
-M.backward = function()
-  local getjumplist = vim.fn.getjumplist()
-  local jumplist = getjumplist[1]
-  if #jumplist == 0 then
-    return
-  end
-
-  -- plus one because of one index
-  local i = getjumplist[2] + 1
-  local j = i
-  local curBufNum = vim.fn.bufnr()
-  local targetBufNum = curBufNum
-
-  while j > 1 and (curBufNum == targetBufNum or not vim.api.nvim_buf_is_valid(targetBufNum)) do
-    j = j - 1
-    targetBufNum = jumplist[j].bufnr
-  end
-  if targetBufNum ~= curBufNum and vim.api.nvim_buf_is_valid(targetBufNum) then
-    jumpbackward(i - j)
-    if on_success then
-      on_success()
-    end
-  end
-end
-
-M.backward_same_buf = function()
-  local jumplistAndPos = vim.fn.getjumplist()
-
-  local jumplist = jumplistAndPos[1]
-  if #jumplist == 0 then
-    return
-  end
-  local lastUsedJumpPos = jumplistAndPos[2] + 1
-  local curBufNum = vim.fn.bufnr()
-
-  local j = lastUsedJumpPos
-  local foundJump = false
-  repeat
-    j = j - 1
-    if j > 0 and (curBufNum == jumplist[j].bufnr and vim.api.nvim_buf_is_valid(jumplist[j].bufnr)) then
-      foundJump = true
-    end
-  until j == 0 or foundJump
-
-  if foundJump then
-    jumpbackward(lastUsedJumpPos - j)
-    if on_success then
-      on_success()
-    end
-  end
-end
-
 M.forward = function()
-  local getjumplist = vim.fn.getjumplist()
-  local jumplist = getjumplist[1]
-  if #jumplist == 0 then
-    return
-  end
-
-  local i = getjumplist[2] + 1
-  local j = i
-  local curBufNum = vim.fn.bufnr()
-  local targetBufNum = curBufNum
-
-  -- find the next different buffer
-  while j < #jumplist and (curBufNum == targetBufNum or vim.api.nvim_buf_is_valid(targetBufNum) == false) do
-    j = j + 1
-    targetBufNum = jumplist[j].bufnr
-  end
-  while j + 1 <= #jumplist and jumplist[j + 1].bufnr == targetBufNum and vim.api.nvim_buf_is_valid(targetBufNum) do
-    j = j + 1
-  end
-  if j <= #jumplist and targetBufNum ~= curBufNum and vim.api.nvim_buf_is_valid(targetBufNum) then
-    jumpforward(j - i)
-
-    if on_success then
-      on_success()
-    end
-  end
+  M.forward_cond(function(from_bufnr, to_bufnr)
+    return from_bufnr ~= to_bufnr and vim.api.nvim_buf_is_valid(to_bufnr)
+  end)
 end
 
 M.forward_same_buf = function()
-  local jumplistAndPos = vim.fn.getjumplist()
-  local jumplist = jumplistAndPos[1]
-  if #jumplist == 0 then
-    return
-  end
-  local lastUsedJumpPos = jumplistAndPos[2] + 1
-  local curBufNum = vim.fn.bufnr()
-
-  local j = lastUsedJumpPos
-  local foundJump = false
-  repeat
-    j = j + 1
-    if j <= #jumplist and curBufNum == jumplist[j].bufnr and vim.api.nvim_buf_is_valid(jumplist[j].bufnr) then
-      foundJump = true
-    end
-  until j > #jumplist or foundJump
-
-  if foundJump then
-    jumpforward(j - lastUsedJumpPos)
-    if on_success then
-      on_success()
-    end
-  end
+  M.forward_cond(function(from_bufnr, to_bufnr)
+    return from_bufnr == to_bufnr and vim.api.nvim_buf_is_valid(to_bufnr)
+  end)
 end
 
 M.setup = function(cfg)
