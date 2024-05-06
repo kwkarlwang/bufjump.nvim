@@ -49,7 +49,7 @@ M.forward_cond = function(stop_cond)
   local getjumplist = vim.fn.getjumplist()
   local jumplist, from_pos = getjumplist[1], getjumplist[2] + 1
   local max_pos = #jumplist
-  if max_pos == 0 or from_pos == max_pos then
+  if max_pos == 0 or from_pos >= max_pos then
     return
   end
 
